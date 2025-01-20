@@ -1,0 +1,8 @@
+{
+	"compilerOptions": {
+		"target": "es2017",
+		"allowSyntheticDefaultImports": false,
+		"baseUrl": "./"
+	},
+	"include": ["src/**/*.js", "src/**/*.d.ts"]
+}

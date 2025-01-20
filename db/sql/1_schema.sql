@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS `divisions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `divisions` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `department_name` varchar(100) NOT NULL COMMENT '部名',
   `group_name` varchar(100) NOT NULL COMMENT 'グループ名',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -48,10 +48,10 @@ DROP TABLE IF EXISTS `project_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project_members` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `project_id` bigint NOT NULL,
-  `user_id` bigint NOT NULL,
-  `project_role_id` bigint NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `project_id` int unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
+  `project_role_id` int unsigned NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -73,7 +73,7 @@ DROP TABLE IF EXISTS `project_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project_roles` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -89,14 +89,17 @@ DROP TABLE IF EXISTS `projects`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `projects` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text,
+  `division_id` int unsigned NOT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `division_id` (`division_id`),
+  CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -108,7 +111,7 @@ DROP TABLE IF EXISTS `report_questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `report_questions` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `questions` json NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1=有効,0=無効',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -125,8 +128,8 @@ DROP TABLE IF EXISTS `slack_channels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `slack_channels` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `weekly_report_id` bigint NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `weekly_report_id` int unsigned NOT NULL,
   `channel_name` varchar(255) NOT NULL,
   `channel_url` varchar(500) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -145,8 +148,8 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `division_id` bigint NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `division_id` int unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `scopes` json NOT NULL COMMENT 'OAuth2.0のようなスコープ配列をJSONで格納',
@@ -167,8 +170,8 @@ DROP TABLE IF EXISTS `weekly_reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `weekly_reports` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `project_id` bigint NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `project_id` int unsigned NOT NULL,
   `due_on` date NOT NULL,
   `answered_on` date NOT NULL,
   `status` enum('SUBMITTED','CONFIRMED','EDITED','RECONFIRMED') DEFAULT NULL,
@@ -191,4 +194,4 @@ CREATE TABLE `weekly_reports` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-20 14:16:19
+-- Dump completed on 2025-01-20 17:26:29
