@@ -1,6 +1,24 @@
 {
-  "name": "rest-api-node-express",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+	"name": "rest-api-node-express",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"format": "prettier --ignore-unknown --write . '!./data'",
+		"mysqldump:full": "docker exec -t mysql_rest-api-node-express mysqldump -u root --databases app > ./mysql/sql/full.sql",
+		"mysqldump:schema": "docker exec -t mysql_rest-api-node-express mysqldump -u root --databases app --no-data | sed -e 's/ AUTO_INCREMENT=[0-9]*//' > ./db/sql/1_schema.sql",
+		"mysqldump:data": "docker exec -t mysql_rest-api-node-express mysqldump -u root -t --databases app --no-create-db > ./db/sql/2_data.sql",
+		"prepare": "npx simple-git-hooks"
+	},
+	"devDependencies": {
+		"lint-staged": "^15.4.1",
+		"prettier": "^3.4.2",
+		"simple-git-hooks": "^2.11.1"
+	},
+	"lint-staged": {
+		"*": "npx prettier --ignore-unknown --write"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "npx lint-staged --verbose"
+	}
 }
