@@ -1,0 +1,6 @@
+{
+  "name": "rest-api-node-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
