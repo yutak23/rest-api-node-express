@@ -6,6 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon src/index.js",
+		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --ignore-unknown --write . '!./data'",
 		"models": "rm -rf ./src/models-auto/*.js && node ./support/sequelize-auto.js && npx eslint --fix ./src/models-auto/* && npx prettier --ignore-unknown --write ./src/models-auto/*",
