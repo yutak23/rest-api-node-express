@@ -9,7 +9,7 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --ignore-unknown --write . '!./data'",
-		"models": "rm -rf ./src/models-auto/*.js && node ./support/sequelize-auto.js && npx eslint --fix ./src/models-auto/* && npx prettier --ignore-unknown --write ./src/models-auto/*",
+		"models": "rm -rf ./src/models-auto/** && node ./support/sequelize-auto.js && node ./support/sequelize-auto-ts.js && npx eslint --fix ./src/models-auto/**.js && npx prettier --ignore-unknown --write ./src/models-auto/*",
 		"mysqldump:full": "docker exec -t mysql_rest-api-node-express mysqldump -u root --databases app > ./mysql/sql/full.sql",
 		"mysqldump:schema": "docker exec -t mysql_rest-api-node-express mysqldump -u root --databases app --no-data | sed -e 's/ AUTO_INCREMENT=[0-9]*//' > ./db/sql/1_schema.sql",
 		"mysqldump:data": "docker exec -t mysql_rest-api-node-express mysqldump -u root -t --databases app --no-create-db > ./db/sql/2_data.sql",
